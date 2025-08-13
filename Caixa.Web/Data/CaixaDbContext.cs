@@ -13,7 +13,10 @@ namespace Caixa
             var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var dbPath = Path.Combine(localAppData, "Caixa.db");
 
-            optionsBuilder.UseSqlite($"Data Source={dbPath}");
+
+            optionsBuilder.UseSqlite($"Data Source={dbPath}")
+                .EnableSensitiveDataLogging()
+                .LogTo(Console.WriteLine, LogLevel.Information);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Caixa.Web.Controllers
 {
@@ -16,7 +17,9 @@ namespace Caixa.Web.Controllers
 
         public ActionResult Index()
         {
-            return View(dbContext.Alunos);
+            var alunos = dbContext.Alunos.Include(x => x.Turma);
+
+            return View(alunos);
         }
 
         public ActionResult Create()
@@ -41,16 +44,18 @@ namespace Caixa.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public ActionResult Edit(Guid? id)
+      
+        public IActionResult Edit(Guid? id)
         {
             if (!id.HasValue)
                 return NotFound();
 
-            var aluno = dbContext.Alunos.Find(id);
-            if (aluno == null)
+            var turma = dbContext.Alunos.Find(id);
+            if (turma == null)
                 return NotFound();
 
-            return View(aluno);
+            ViewBag.Turmas = GetTurmas();
+            return View(turma);
         }
 
         [HttpPost]
