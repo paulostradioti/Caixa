@@ -1,0 +1,22 @@
+﻿@using Caixa.Web.Data
+@model Turma
+
+@{
+    ViewData["Title"] = "Create Turma";
+}
+
+<h2 class="mb-4">Editar Turma</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Nome" class="form-label"></label>
+        <input asp-for="Nome" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Professor" class="form-label"></label>
+        <input asp-for="Professor" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary ms-2">Cancelar</a>
+</form>
