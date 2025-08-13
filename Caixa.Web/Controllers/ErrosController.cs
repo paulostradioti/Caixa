@@ -10,7 +10,7 @@ namespace Caixa.Web.Controllers
             if (code == 404)
                 return View("~/Views/Shared/Errors/NotFound.cshtml");
 
-            return View();
+            return View("~/Views/Shared/Error.cshtml");
         }
     }
 }

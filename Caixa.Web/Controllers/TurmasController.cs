@@ -1,7 +1,5 @@
 ﻿using Caixa.Web.Data;
-using Caixa.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace Caixa.Web.Controllers
 {
@@ -10,19 +8,13 @@ namespace Caixa.Web.Controllers
         private readonly CaixaDbContext dbContext;
 
         public TurmasController(CaixaDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
+            => this.dbContext = dbContext;
 
         public IActionResult Index()
-        {
-            return View(dbContext.Turmas);
-        }
+            => View(dbContext.Turmas);
 
         public IActionResult Create()
-        {
-            return View();
-        }
+            => View();
 
         [HttpPost]
         public IActionResult Create(Turma turma)
@@ -91,12 +83,6 @@ namespace Caixa.Web.Controllers
             dbContext.SaveChanges();
 
             return RedirectToAction(nameof(Index));
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

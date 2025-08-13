@@ -1,5 +1,4 @@
 ﻿using Caixa.Web.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,26 +10,22 @@ namespace Caixa.Web.Controllers
         private readonly CaixaDbContext dbContext;
 
         public AlunosController(CaixaDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
+            => this.dbContext = dbContext;
 
-        public ActionResult Index()
+        public IActionResult Index()
         {
             var alunos = dbContext.Alunos.Include(x => x.Turma);
-
             return View(alunos);
         }
 
-        public ActionResult Create()
+        public IActionResult Create()
         {
             ViewBag.Turmas = GetTurmas();
-
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create(Aluno aluno)
+        public IActionResult Create(Aluno aluno)
         {
             if (!ModelState.IsValid)
             {
@@ -44,49 +39,45 @@ namespace Caixa.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-      
+
         public IActionResult Edit(Guid? id)
         {
             if (!id.HasValue)
                 return NotFound();
 
-            var turma = dbContext.Alunos.Find(id);
-            if (turma == null)
+            var aluno = dbContext.Alunos.Find(id);
+            if (aluno == null)
                 return NotFound();
 
             ViewBag.Turmas = GetTurmas();
-            return View(turma);
+            return View(aluno);
         }
 
         [HttpPost]
-        public ActionResult Edit(Aluno aluno)
+        public IActionResult Edit(Aluno aluno)
         {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Turmas = GetTurmas();
+                return View(aluno);
+            }
+
             dbContext.Alunos.Update(aluno);
             dbContext.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: AlunosController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(Guid? id)
         {
-            return View();
+            throw new NotImplementedException();
         }
 
-        // POST: AlunosController/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult DeleteConfirm(Guid? id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            throw new NotImplementedException();
         }
-
 
         private IEnumerable<SelectListItem> GetTurmas()
         {
