@@ -5,19 +5,10 @@ namespace Caixa
 {
     public class CaixaDbContext : DbContext
     {
+        public CaixaDbContext(DbContextOptions<CaixaDbContext> options) : base(options) { }
+
         public DbSet<Turma> Turmas => Set<Turma>();
         public DbSet<Aluno> Alunos => Set<Aluno>();
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var dbPath = Path.Combine(localAppData, "Caixa.db");
-
-
-            optionsBuilder.UseSqlite($"Data Source={dbPath}")
-                .EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information);
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,5 +16,35 @@ namespace Caixa
 
             base.OnModelCreating(modelBuilder);
         }
+
+        internal void SeedDatabase()
+        {
+            if (Turmas.Count() == 0)
+            {
+                var turmas = new Turma[]
+                {
+                    new() { Nome = "Turma 1", Professor = "Professor 1" },
+                    new() { Nome = "Turma 2", Professor = "Professor 2" }
+                };
+
+                Turmas.AddRange(turmas);
+                SaveChanges();
+            }
+
+            if (Alunos.Count() == 0)
+            {
+                var turmas = Turmas.Take(2);
+                foreach (var turma in turmas)
+                {
+                    var alunos = new Aluno[]
+                    {
+                        new() { Name = "Aluno 1", TurmaId = turma.Id },
+                        new() { Name = "Aluno 2", TurmaId = turma.Id }
+                    };
+                    Alunos.AddRange(alunos);
+                }
+                SaveChanges();
+            }
+        }   
     }
 }

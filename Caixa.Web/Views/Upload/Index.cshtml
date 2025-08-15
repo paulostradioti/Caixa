@@ -1,0 +1,12 @@
+﻿@model UploadViewModel
+
+<div asp-validation-summary="All"></div>
+
+<form asp-action="Upload" method="post" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light" style="max-width: 400px; margin: 2rem auto;">
+    <div class="mb-3">
+        <label for="arquivo" class="form-label">Arquivo</label>
+        <input asp-for="Arquivo" id="arquivo" type="file" class="form-control" />
+        <span asp-validation-for="Arquivo" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+</form>
