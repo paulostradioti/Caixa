@@ -1,5 +1,7 @@
 ﻿@model UploadViewModel
 
+<div>@TempData["mensagem"]</div>
+
 <div asp-validation-summary="All"></div>
 
 <form asp-action="Upload" method="post" enctype="multipart/form-data" class="p-4 border rounded shadow-sm bg-light" style="max-width: 400px; margin: 2rem auto;">
